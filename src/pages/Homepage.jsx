@@ -47,7 +47,7 @@ function Homepage() {
       <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl">
         Choose your breathing exercise for today
       </p>
-      <div className="lg:ml-60 lg:mr-60 sm:flex sm:justify-center">
+      <div className="lg:ml-72 lg:mr-56 sm:flex sm:justify-center">
         <div className="sm:flex-grow" style={gridContainerStyle}>
           {disanja.map((breathingTechnique, index) => (
             <Link
