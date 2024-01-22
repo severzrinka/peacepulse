@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-light-blue-200 {
+    background-color: #e4f7ff; /* Light blue color code, you can adjust as needed */
+  }
+  .boja-200 {
+    background-color: #c9e6ff;
+  }
+  .tekst {
+    font-family: sans-serif;
+  }
+}
