@@ -1,10 +1,12 @@
-import Button from "../components/ButtoN";
+import ButtoN from "../components/ButtoN";
 import Header from "../components/Header";
 import { useState } from "react";
 import { useBreath } from "../contexts/BreathContext";
 import { disanja, opis } from "/globalThings";
 import sea from "/public/sea.png";
 import more from "/public/more.mp4";
+import CountdownTimer from "../components/CountdownTimer";
+import InsertNumber from "../components/InsertNumber";
 
 function Breath() {
   const { selectedBreathingTechnique } = useBreath();
@@ -29,40 +31,58 @@ function Breath() {
   };
 
   const index = disanja.indexOf(selectedBreathingTechnique);
-
   const description = index !== -1 ? opis[index] : "";
 
-  function hanleClick() {
-    console.log("popuši mi ");
-    setIsVideoPlaying(true);
+  function handleClick(buttonText) {
+    if (buttonText === "Begin") {
+      setIsVideoPlaying(true);
+    } else setIsVideoPlaying(false);
   }
 
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}>
         <Header />
+        {isVideoPlaying ? <CountdownTimer></CountdownTimer> : <div></div>}
+
         <h1 className="md:text-3xl mt-12 font-serif text-center black sm:text-l">
           {selectedBreathingTechnique}
         </h1>
-        <p className="lg:ml-72 lg:mr-56 mt-12 md:text-lg font-serif text-center black sm:text-l">
-          {description}
-        </p>
-        <p className="mt-12 font-serif md:text-lg text-center black sm:text-l">
+        <p className="mt-10 font-serif md:text-lg text-center black sm:text-l">
           Simply sync your breathing to the animation
         </p>
-        <div className="flex mt-12 justify-center">
-          {isVideoPlaying ? (
+
+        {isVideoPlaying ? (
+          <div className="flex mt-10 justify-center">
             <video
               src={more}
               controls
               autoPlay
-              className="mt-12"
-              style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}
+              style={{ width: "100%", maxWidth: "800px" }}
             />
-          ) : (
-            <Button text="Begin" onClick={hanleClick}></Button>
-          )}
+          </div>
+        ) : (
+          <div className="lg:ml-72 lg:mr-56 mt-12 md:text-lg font-serif text-center black sm:text-l">
+            <p>{description}</p>
+          </div>
+        )}
+
+        <div className="flex mt-7 justify-center">
+          <ButtoN
+            text={`${isVideoPlaying ? "End" : "Begin"}`}
+            onClick={() => handleClick(isVideoPlaying ? "End" : "Begin")}
+          ></ButtoN>
         </div>
+        {isVideoPlaying ? (
+          <div></div>
+        ) : (
+          <>
+            <p className="lg:ml-64 lg:mr-56 mt-5 md:text-lg font-serif text-center black sm:text-l">
+              You can set the time limit (optional)
+            </p>
+            <InsertNumber></InsertNumber>
+          </>
+        )}
       </div>
     </div>
   );
