@@ -7,10 +7,12 @@ import sea from "/public/sea.png";
 import more from "/public/more.mp4";
 import CountdownTimer from "../components/CountdownTimer";
 import InsertNumber from "../components/InsertNumber";
+import CountupTimer from "../components/CountupTimer";
 
 function Breath() {
   const { selectedBreathingTechnique } = useBreath();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [minutes, setMinutes] = useState("");
 
   const pageStyle = {
     backgroundImage: `url(${sea})`,
@@ -39,12 +41,26 @@ function Breath() {
     } else setIsVideoPlaying(false);
   }
 
+  const handleMinutesChange = (newMinutes) => {
+    console.log(newMinutes);
+    setMinutes(newMinutes);
+  };
+
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}>
         <Header />
-        {isVideoPlaying ? <CountdownTimer></CountdownTimer> : <div></div>}
+        {isVideoPlaying && minutes !== "" ? (
+          <CountdownTimer time={minutes}></CountdownTimer>
+        ) : (
+          <div></div>
+        )}
 
+        {isVideoPlaying && minutes === "" ? (
+          <CountupTimer></CountupTimer>
+        ) : (
+          <div></div>
+        )}
         <h1 className="md:text-3xl mt-12 font-serif text-center black sm:text-l">
           {selectedBreathingTechnique}
         </h1>
@@ -67,20 +83,26 @@ function Breath() {
           </div>
         )}
 
-        <div className="flex mt-7 justify-center">
+        <div className="flex mt-5 justify-center">
           <ButtoN
             text={`${isVideoPlaying ? "End" : "Begin"}`}
             onClick={() => handleClick(isVideoPlaying ? "End" : "Begin")}
           ></ButtoN>
+
+          {isVideoPlaying && (
+            <div className="ml-2">
+              <ButtoN text="Pause"></ButtoN>
+            </div>
+          )}
         </div>
         {isVideoPlaying ? (
-          <div></div>
+          ""
         ) : (
           <>
             <p className="lg:ml-64 lg:mr-56 mt-5 md:text-lg font-serif text-center black sm:text-l">
               You can set the time limit (optional)
             </p>
-            <InsertNumber></InsertNumber>
+            <InsertNumber onMinutesChange={handleMinutesChange}></InsertNumber>
           </>
         )}
       </div>

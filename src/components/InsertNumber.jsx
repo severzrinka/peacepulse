@@ -1,22 +1,15 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-const InsertNumber = () => {
+const InsertNumber = ({ onMinutesChange }) => {
   const [minutes, setMinutes] = useState("");
-  const [seconds, setSeconds] = useState("");
 
   const handleMinutesChange = (event) => {
     const { value } = event.target;
-    // Ensure that the value is a positive integer with up to two digits
     if (/^\d{0,2}$/.test(value)) {
       setMinutes(value);
-    }
-  };
-
-  const handleSecondsChange = (event) => {
-    const { value } = event.target;
-
-    if (/^\d{0,2}$/.test(value) || value === "") {
-      setSeconds(value);
+      // Call the parent component's callback function with the updated minutes
+      onMinutesChange(value);
     }
   };
 
@@ -32,19 +25,12 @@ const InsertNumber = () => {
           style={{ width: "40px", height: "50px" }}
         />
       </label>
-      <label>
-        <input
-          type="text"
-          value={seconds}
-          onChange={handleSecondsChange}
-          placeholder="00"
-          maxLength="2"
-          className="ml-2"
-          style={{ width: "40px", height: "50px" }}
-        />
-      </label>
     </div>
   );
+};
+
+InsertNumber.propTypes = {
+  onMinutesChange: PropTypes.number.isRequired,
 };
 
 export default InsertNumber;
