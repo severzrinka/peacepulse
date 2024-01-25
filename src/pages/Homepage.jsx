@@ -52,7 +52,7 @@ function Homepage() {
           {disanja.map((breathingTechnique, index) => (
             <Link
               key={index}
-              to="/breath"
+              to={`/breath/${index}`}
               onClick={() => setBreathingTechnique(breathingTechnique)}
             >
               <div style={boxStyle}>

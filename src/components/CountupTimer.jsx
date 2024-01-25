@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-function CountupTimer() {
-  const [isRunning, setIsRunning] = useState(false);
+function CountupTimer({ isRunning, setIsRunning }) {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -16,16 +16,7 @@ function CountupTimer() {
     return () => {
       clearInterval(interval);
     };
-  }, [isRunning]);
-
-  const handleStartStop = () => {
-    setIsRunning(!isRunning);
-  };
-
-  const handleReset = () => {
-    setIsRunning(false);
-    setTime(0);
-  };
+  }, [isRunning, setIsRunning]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -39,14 +30,17 @@ function CountupTimer() {
   };
 
   return (
-    <div>
+    <div style={{ position: "absolute", top: 130, right: 0, padding: "10px" }}>
       <p className="md:text-3xl font-serif black sm:text-l">
         {formatTime(time)}
       </p>
-      <button onClick={handleStartStop}>{isRunning ? "Stop" : "Start"}</button>
-      <button onClick={handleReset}>Reset</button>
     </div>
   );
 }
+
+CountupTimer.propTypes = {
+  isRunning: PropTypes.bool.isRequired,
+  setIsRunning: PropTypes.func.isRequired,
+};
 
 export default CountupTimer;

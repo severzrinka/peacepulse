@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const CountdownTimer = ({ time }) => {
+const CountdownTimer = ({ time, isPaused }) => {
   const [currentTime, setCurrentTime] = useState(time * 60);
   useEffect(() => {
     const timer = setInterval(() => {
-      if (currentTime > 0) {
+      if (!isPaused && currentTime > 0) {
         setCurrentTime((prevTime) => prevTime - 1);
-      } else {
-        clearInterval(timer);
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [currentTime]);
+  }, [currentTime, isPaused]);
 
   const formatTime = (seconds) => {
     const remainingMinutes = Math.floor(seconds / 60);
@@ -34,6 +32,7 @@ const CountdownTimer = ({ time }) => {
 
 CountdownTimer.propTypes = {
   time: PropTypes.number.isRequired,
+  isPaused: PropTypes.bool.isRequired,
 };
 
 export default CountdownTimer;

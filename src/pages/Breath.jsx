@@ -1,18 +1,21 @@
 import ButtoN from "../components/ButtoN";
 import Header from "../components/Header";
 import { useState } from "react";
-import { useBreath } from "../contexts/BreathContext";
 import { disanja, opis } from "/globalThings";
 import sea from "/public/sea.png";
 import more from "/public/more.mp4";
 import CountdownTimer from "../components/CountdownTimer";
 import InsertNumber from "../components/InsertNumber";
 import CountupTimer from "../components/CountupTimer";
+import { useParams } from "react-router-dom";
 
 function Breath() {
-  const { selectedBreathingTechnique } = useBreath();
+  const { id } = useParams();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [minutes, setMinutes] = useState("");
+  const [setIsCountdownRunning] = useState(true);
+  const [isCountupRunning, setIsCountupRunning] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   const pageStyle = {
     backgroundImage: `url(${sea})`,
@@ -32,37 +35,56 @@ function Breath() {
     backgroundColor: "rgba(222, 241, 255, 0.6)",
   };
 
-  const index = disanja.indexOf(selectedBreathingTechnique);
-  const description = index !== -1 ? opis[index] : "";
+  const pozicija = parseInt(id, 10);
+  const description = opis[pozicija];
+  const ime = disanja[pozicija];
 
+  //RIJEŠI PAUSE I RESUME BUTON
   function handleClick(buttonText) {
     if (buttonText === "Begin") {
       setIsVideoPlaying(true);
-    } else setIsVideoPlaying(false);
+      setIsCountdownRunning(true);
+      setIsCountupRunning(true);
+      setIsPaused(false);
+    } else {
+      setIsVideoPlaying(false);
+      setIsCountdownRunning(false);
+      setIsCountupRunning(false);
+      setMinutes("");
+      setIsPaused(false);
+      setIsCountupRunning(false);
+    }
   }
 
   const handleMinutesChange = (newMinutes) => {
-    console.log(newMinutes);
     setMinutes(newMinutes);
   };
+
+  function handlePause() {
+    setIsPaused(!isPaused);
+    setIsCountupRunning(!isCountupRunning);
+  }
 
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}>
         <Header />
         {isVideoPlaying && minutes !== "" ? (
-          <CountdownTimer time={minutes}></CountdownTimer>
+          <CountdownTimer time={minutes} isPaused={isPaused}></CountdownTimer>
         ) : (
           <div></div>
         )}
 
         {isVideoPlaying && minutes === "" ? (
-          <CountupTimer></CountupTimer>
+          <CountupTimer
+            isRunning={isCountupRunning}
+            setIsRunning={setIsCountupRunning}
+          ></CountupTimer>
         ) : (
           <div></div>
         )}
         <h1 className="md:text-3xl mt-12 font-serif text-center black sm:text-l">
-          {selectedBreathingTechnique}
+          {ime}
         </h1>
         <p className="mt-10 font-serif md:text-lg text-center black sm:text-l">
           Simply sync your breathing to the animation
@@ -91,7 +113,10 @@ function Breath() {
 
           {isVideoPlaying && (
             <div className="ml-2">
-              <ButtoN text="Pause"></ButtoN>
+              <ButtoN
+                text={isPaused ? "Resume" : "Pause"}
+                onClick={handlePause}
+              ></ButtoN>
             </div>
           )}
         </div>
@@ -100,7 +125,7 @@ function Breath() {
         ) : (
           <>
             <p className="lg:ml-64 lg:mr-56 mt-5 md:text-lg font-serif text-center black sm:text-l">
-              You can set the time limit (optional)
+              You can set the time limit in minutes (optional)
             </p>
             <InsertNumber onMinutesChange={handleMinutesChange}></InsertNumber>
           </>
