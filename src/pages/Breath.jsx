@@ -13,10 +13,11 @@ function Breath() {
   const { id } = useParams();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [minutes, setMinutes] = useState("");
-  const [setIsCountdownRunning] = useState(true);
+  const [running, setIsCountdownRunning] = useState(true);
   const [isCountupRunning, setIsCountupRunning] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
 
+  console.log(running);
   const pageStyle = {
     backgroundImage: `url(${sea})`,
     backgroundSize: "cover",
@@ -39,7 +40,6 @@ function Breath() {
   const description = opis[pozicija];
   const ime = disanja[pozicija];
 
-  //RIJEŠI PAUSE I RESUME BUTON
   function handleClick(buttonText) {
     if (buttonText === "Begin") {
       setIsVideoPlaying(true);
@@ -60,6 +60,7 @@ function Breath() {
     setMinutes(newMinutes);
   };
 
+  // nekak pauziraj video tu bez da promjenis isVideoPlaying
   function handlePause() {
     setIsPaused(!isPaused);
     setIsCountupRunning(!isCountupRunning);
