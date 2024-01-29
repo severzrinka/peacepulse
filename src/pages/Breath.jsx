@@ -1,6 +1,6 @@
+import { useState, useRef, useEffect } from "react";
 import ButtoN from "../components/ButtoN";
 import Header from "../components/Header";
-import { useState } from "react";
 import { disanja, opis } from "/globalThings";
 import sea from "/public/sea.png";
 import more from "/public/more.mp4";
@@ -8,16 +8,19 @@ import CountdownTimer from "../components/CountdownTimer";
 import InsertNumber from "../components/InsertNumber";
 import CountupTimer from "../components/CountupTimer";
 import { useParams } from "react-router-dom";
+import Popup from "../components/Popup";
 
 function Breath() {
   const { id } = useParams();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [minutes, setMinutes] = useState("");
-  const [running, setIsCountdownRunning] = useState(true);
+  const [isCountdownRunning, setIsCountdownRunning] = useState(true);
   const [isCountupRunning, setIsCountupRunning] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
+  const videoRef = useRef(null);
+  const [showPopup, setShowPopup] = useState(false);
 
-  console.log(running);
+  console.log(isCountdownRunning, showPopup);
   const pageStyle = {
     backgroundImage: `url(${sea})`,
     backgroundSize: "cover",
@@ -40,12 +43,26 @@ function Breath() {
   const description = opis[pozicija];
   const ime = disanja[pozicija];
 
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPaused) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+    }
+  }, [isPaused]);
+
   function handleClick(buttonText) {
+    setShowPopup(true);
     if (buttonText === "Begin") {
-      setIsVideoPlaying(true);
-      setIsCountdownRunning(true);
-      setIsCountupRunning(true);
-      setIsPaused(false);
+      setTimeout(() => {
+        setIsVideoPlaying(true);
+        setIsCountdownRunning(true);
+        setIsCountupRunning(true);
+        setIsPaused(false);
+        setShowPopup(false);
+      }, 3000);
     } else {
       setIsVideoPlaying(false);
       setIsCountdownRunning(false);
@@ -53,6 +70,7 @@ function Breath() {
       setMinutes("");
       setIsPaused(false);
       setIsCountupRunning(false);
+      setShowPopup(false);
     }
   }
 
@@ -60,7 +78,6 @@ function Breath() {
     setMinutes(newMinutes);
   };
 
-  // nekak pauziraj video tu bez da promjenis isVideoPlaying
   function handlePause() {
     setIsPaused(!isPaused);
     setIsCountupRunning(!isCountupRunning);
@@ -69,6 +86,7 @@ function Breath() {
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}>
+        <Popup show={showPopup}></Popup>
         <Header />
         {isVideoPlaying && minutes !== "" ? (
           <CountdownTimer time={minutes} isPaused={isPaused}></CountdownTimer>
@@ -94,6 +112,7 @@ function Breath() {
         {isVideoPlaying ? (
           <div className="flex mt-10 justify-center">
             <video
+              ref={videoRef}
               src={more}
               controls
               autoPlay
