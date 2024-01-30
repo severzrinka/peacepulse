@@ -3,12 +3,13 @@ import ButtoN from "../components/ButtoN";
 import Header from "../components/Header";
 import { disanja, opis } from "/globalThings";
 import sea from "/public/sea.png";
-import more from "/public/more.mp4";
+import kocka from "/public/kocka.mp4";
 import CountdownTimer from "../components/CountdownTimer";
 import InsertNumber from "../components/InsertNumber";
 import CountupTimer from "../components/CountupTimer";
 import { useParams } from "react-router-dom";
 import Popup from "../components/Popup";
+import Congrats from "./Congrats";
 
 function Breath() {
   const { id } = useParams();
@@ -19,8 +20,10 @@ function Breath() {
   const [isPaused, setIsPaused] = useState(false);
   const videoRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [currentTime, setCurrentTime] = useState(minutes * 60);
 
-  console.log(isCountdownRunning, showPopup);
+  console.log(isCountdownRunning);
+
   const pageStyle = {
     backgroundImage: `url(${sea})`,
     backgroundSize: "cover",
@@ -43,6 +46,13 @@ function Breath() {
   const description = opis[pozicija];
   const ime = disanja[pozicija];
 
+  const handleVideoEnd = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+    }
+  };
+
   useEffect(() => {
     if (videoRef.current) {
       if (isPaused) {
@@ -52,6 +62,22 @@ function Breath() {
       }
     }
   }, [isPaused]);
+
+  const handleTimerEnd = () => {
+    setIsVideoPlaying(false);
+    setIsCountdownRunning(false);
+    setIsCountupRunning(false);
+    setMinutes("");
+    setIsPaused(false);
+    setIsCountupRunning(false);
+    setShowPopup(false);
+  };
+
+  useEffect(() => {
+    if (currentTime === 0) {
+      handleTimerEnd();
+    }
+  }, [currentTime]);
 
   function handleClick(buttonText) {
     setShowPopup(true);
@@ -86,10 +112,15 @@ function Breath() {
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}>
-        <Popup show={showPopup}></Popup>
+        <Popup show={showPopup} what={"get ready..."}></Popup>
         <Header />
         {isVideoPlaying && minutes !== "" ? (
-          <CountdownTimer time={minutes} isPaused={isPaused}></CountdownTimer>
+          <CountdownTimer
+            time={minutes}
+            isPaused={isPaused}
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+          ></CountdownTimer>
         ) : (
           <div></div>
         )}
@@ -113,10 +144,11 @@ function Breath() {
           <div className="flex mt-10 justify-center">
             <video
               ref={videoRef}
-              src={more}
+              src={kocka}
               controls
               autoPlay
-              style={{ width: "100%", maxWidth: "800px" }}
+              style={{ width: "80%", maxWidth: "600px" }}
+              onEnded={handleVideoEnd}
             />
           </div>
         ) : (
@@ -130,7 +162,7 @@ function Breath() {
             text={`${isVideoPlaying ? "End" : "Begin"}`}
             onClick={() => handleClick(isVideoPlaying ? "End" : "Begin")}
           ></ButtoN>
-
+          <Congrats></Congrats>;
           {isVideoPlaying && (
             <div className="ml-2">
               <ButtoN

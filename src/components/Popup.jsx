@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
-import countdown from "/public/countdown.mp4";
 
-function Popup({ show }) {
+function Popup({ show, what }) {
   if (!show) {
     return null;
   }
@@ -9,11 +8,7 @@ function Popup({ show }) {
   return (
     <div className="popup-container">
       <div className="flex mt-10 justify-center">
-        <video
-          src={countdown}
-          autoPlay
-          style={{ width: "80%", maxWidth: "700px" }}
-        />
+        <p className="text-5xl mt-4 text-center font-serif italic">{what}</p>
       </div>
     </div>
   );
@@ -21,6 +16,7 @@ function Popup({ show }) {
 
 Popup.propTypes = {
   show: PropTypes.bool.isRequired,
+  what: PropTypes.string.isRequired,
 };
 
 export default Popup;
