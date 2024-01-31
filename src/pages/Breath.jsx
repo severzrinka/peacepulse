@@ -1,28 +1,101 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setVideoPlaying,
+  setMinutes,
+  setCountdownRunning,
+  setCountupRunning,
+  setPaused,
+  setShowPopup,
+  setCurrentTime,
+  setShowCongrats,
+} from "../reduxOperations/actions";
 import ButtoN from "../components/ButtoN";
 import Header from "../components/Header";
-import { disanja, opis } from "/globalThings";
-import sea from "/public/sea.png";
-import kocka from "/public/kocka.mp4";
 import CountdownTimer from "../components/CountdownTimer";
 import InsertNumber from "../components/InsertNumber";
 import CountupTimer from "../components/CountupTimer";
-import { useParams } from "react-router-dom";
 import Popup from "../components/Popup";
+import { useParams } from "react-router-dom";
+import sea from "/public/sea.png";
+import kocka from "/public/kocka.mp4";
+import { disanja, opis } from "/globalThings";
 import Congrats from "./Congrats";
 
 function Breath() {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [minutes, setMinutes] = useState("");
-  const [isCountdownRunning, setIsCountdownRunning] = useState(true);
-  const [isCountupRunning, setIsCountupRunning] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
+  const {
+    isVideoPlaying,
+    minutes,
+    isCountdownRunning,
+    isCountupRunning,
+    isPaused,
+    showPopup,
+    currentTime,
+    showCongrats,
+  } = useSelector((state) => state.breath);
   const videoRef = useRef(null);
-  const [showPopup, setShowPopup] = useState(false);
-  const [currentTime, setCurrentTime] = useState(minutes * 60);
 
   console.log(isCountdownRunning);
+
+  const pozicija = parseInt(id, 10);
+  const description = opis[pozicija];
+  const ime = disanja[pozicija];
+
+  useEffect(() => {
+    if (videoRef.current) {
+      isPaused ? videoRef.current.pause() : videoRef.current.play();
+    }
+  }, [isPaused]);
+
+  useEffect(() => {
+    if (currentTime === 0) {
+      handleTimerEnd();
+    }
+  }, [currentTime]);
+
+  const handleVideoEnd = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+    }
+  };
+
+  const handleTimerEnd = () => {
+    dispatch(setVideoPlaying(false));
+    dispatch(setCountdownRunning(false));
+    dispatch(setCountupRunning(false));
+    dispatch(setMinutes(""));
+    dispatch(setPaused(false));
+    dispatch(setCountupRunning(false));
+    dispatch(setShowPopup(false));
+  };
+
+  function handleClick(buttonText) {
+    dispatch(setShowPopup(true));
+    if (buttonText === "Begin") {
+      setTimeout(() => {
+        dispatch(setVideoPlaying(true));
+        dispatch(setCountdownRunning(true));
+        dispatch(setCountupRunning(true));
+        dispatch(setPaused(false));
+        dispatch(setShowPopup(false));
+      }, 3000);
+    } else {
+      dispatch(setShowCongrats(true));
+      handleTimerEnd();
+    }
+  }
+
+  const handleMinutesChange = (newMinutes) => {
+    dispatch(setMinutes(newMinutes));
+  };
+
+  function handlePause() {
+    dispatch(setPaused(!isPaused));
+    dispatch(setCountupRunning(!isCountupRunning));
+  }
 
   const pageStyle = {
     backgroundImage: `url(${sea})`,
@@ -42,76 +115,10 @@ function Breath() {
     backgroundColor: "rgba(222, 241, 255, 0.6)",
   };
 
-  const pozicija = parseInt(id, 10);
-  const description = opis[pozicija];
-  const ime = disanja[pozicija];
-
-  const handleVideoEnd = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play();
-    }
-  };
-
-  useEffect(() => {
-    if (videoRef.current) {
-      if (isPaused) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-    }
-  }, [isPaused]);
-
-  const handleTimerEnd = () => {
-    setIsVideoPlaying(false);
-    setIsCountdownRunning(false);
-    setIsCountupRunning(false);
-    setMinutes("");
-    setIsPaused(false);
-    setIsCountupRunning(false);
-    setShowPopup(false);
-  };
-
-  useEffect(() => {
-    if (currentTime === 0) {
-      handleTimerEnd();
-    }
-  }, [currentTime]);
-
-  function handleClick(buttonText) {
-    setShowPopup(true);
-    if (buttonText === "Begin") {
-      setTimeout(() => {
-        setIsVideoPlaying(true);
-        setIsCountdownRunning(true);
-        setIsCountupRunning(true);
-        setIsPaused(false);
-        setShowPopup(false);
-      }, 3000);
-    } else {
-      setIsVideoPlaying(false);
-      setIsCountdownRunning(false);
-      setIsCountupRunning(false);
-      setMinutes("");
-      setIsPaused(false);
-      setIsCountupRunning(false);
-      setShowPopup(false);
-    }
-  }
-
-  const handleMinutesChange = (newMinutes) => {
-    setMinutes(newMinutes);
-  };
-
-  function handlePause() {
-    setIsPaused(!isPaused);
-    setIsCountupRunning(!isCountupRunning);
-  }
-
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}>
+        {showCongrats && <Congrats></Congrats>}
         <Popup show={showPopup} what={"get ready..."}></Popup>
         <Header />
         {isVideoPlaying && minutes !== "" ? (
@@ -119,7 +126,7 @@ function Breath() {
             time={minutes}
             isPaused={isPaused}
             currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
+            setCurrentTime={(time) => dispatch(setCurrentTime(time))}
           ></CountdownTimer>
         ) : (
           <div></div>
@@ -128,7 +135,7 @@ function Breath() {
         {isVideoPlaying && minutes === "" ? (
           <CountupTimer
             isRunning={isCountupRunning}
-            setIsRunning={setIsCountupRunning}
+            setIsRunning={(isRunning) => dispatch(setCountupRunning(isRunning))}
           ></CountupTimer>
         ) : (
           <div></div>
@@ -147,7 +154,7 @@ function Breath() {
               src={kocka}
               controls
               autoPlay
-              style={{ width: "80%", maxWidth: "600px" }}
+              style={{ width: "60%", maxWidth: "500px" }}
               onEnded={handleVideoEnd}
             />
           </div>
@@ -162,7 +169,6 @@ function Breath() {
             text={`${isVideoPlaying ? "End" : "Begin"}`}
             onClick={() => handleClick(isVideoPlaying ? "End" : "Begin")}
           ></ButtoN>
-          <Congrats></Congrats>;
           {isVideoPlaying && (
             <div className="ml-2">
               <ButtoN
@@ -173,7 +179,7 @@ function Breath() {
           )}
         </div>
         {isVideoPlaying ? (
-          ""
+          <div></div>
         ) : (
           <>
             <p className="lg:ml-64 lg:mr-56 mt-5 md:text-lg font-serif text-center black sm:text-l">

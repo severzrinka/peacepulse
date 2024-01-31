@@ -8,7 +8,6 @@ const InsertNumber = ({ onMinutesChange }) => {
     const { value } = event.target;
     if (/^\d{0,2}$/.test(value)) {
       setMinutes(value);
-      // Call the parent component's callback function with the updated minutes
       onMinutesChange(value);
     }
   };

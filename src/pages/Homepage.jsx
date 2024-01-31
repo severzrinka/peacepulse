@@ -3,8 +3,18 @@ import Header from "../components/Header";
 import { disanja } from "/globalThings";
 import sea from "/public/sea.png";
 import { useBreath } from "../contexts/BreathContext";
+import {
+  setVideoPlaying,
+  setMinutes,
+  setCountdownRunning,
+  setCountupRunning,
+  setPaused,
+  setShowPopup,
+} from "../reduxOperations/actions";
+import { useDispatch } from "react-redux";
 
 function Homepage() {
+  const dispatch = useDispatch();
   const { setBreathingTechnique } = useBreath();
 
   const pageStyle = {
@@ -41,19 +51,30 @@ function Homepage() {
     textAlign: "center",
   };
 
+  function handleLinkKlik(x) {
+    setBreathingTechnique(x);
+    dispatch(setVideoPlaying(false));
+    dispatch(setCountdownRunning(false));
+    dispatch(setCountupRunning(false));
+    dispatch(setMinutes(""));
+    dispatch(setPaused(false));
+    dispatch(setCountupRunning(false));
+    dispatch(setShowPopup(false));
+  }
+
   return (
     <div style={pageStyle}>
       <Header />
       <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl">
         Choose your breathing exercise for today
       </p>
-      <div className="lg:ml-72 lg:mr-56 sm:flex sm:justify-center">
+      <div className="lg:ml-96 lg:mr-32 md:ml-72 md:mr-56 sm:flex sm:justify-center">
         <div className="sm:flex-grow" style={gridContainerStyle}>
           {disanja.map((breathingTechnique, index) => (
             <Link
               key={index}
               to={`/breath/${index}`}
-              onClick={() => setBreathingTechnique(breathingTechnique)}
+              onClick={() => handleLinkKlik(breathingTechnique)}
             >
               <div style={boxStyle}>
                 <p style={textStyle}>{breathingTechnique}</p>
