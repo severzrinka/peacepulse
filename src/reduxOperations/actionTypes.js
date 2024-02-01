@@ -4,5 +4,6 @@ export const countdownRunning = "countdownRunning";
 export const countupRunning = "countupRunning";
 export const paused = "paused";
 export const showPopup = "showPopup";
-export const currentTime = "currentTime";
+export const currentTimeSet = "currentTime";
 export const showCongratsSet = "showCongratsSet";
+export const vrijeme = "vrijeme";

@@ -1,22 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
+import { setvrijeme } from "../reduxOperations/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 function CountupTimer({ isRunning, setIsRunning }) {
-  const [time, setTime] = useState(0);
+  const dispatch = useDispatch();
+  const { times } = useSelector((state) => state.breath);
 
   useEffect(() => {
     let interval;
 
     if (isRunning) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
+        dispatch(setvrijeme(times + 1));
       }, 1000);
     }
 
     return () => {
       clearInterval(interval);
     };
-  }, [isRunning, setIsRunning]);
+  }, [isRunning, times, setIsRunning]); // Include times as a dependency to useEffect
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -32,7 +35,7 @@ function CountupTimer({ isRunning, setIsRunning }) {
   return (
     <div style={{ position: "absolute", top: 130, right: 0, padding: "10px" }}>
       <p className="md:text-3xl font-serif black sm:text-l">
-        {formatTime(time)}
+        {formatTime(times)}
       </p>
     </div>
   );

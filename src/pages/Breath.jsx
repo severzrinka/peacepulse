@@ -7,7 +7,7 @@ import {
   setCountupRunning,
   setPaused,
   setShowPopup,
-  setCurrentTime,
+  //  setCurrentTime,
   setShowCongrats,
 } from "../reduxOperations/actions";
 import ButtoN from "../components/ButtoN";
@@ -32,7 +32,7 @@ function Breath() {
     isCountupRunning,
     isPaused,
     showPopup,
-    currentTime,
+    // currentTime,
     showCongrats,
   } = useSelector((state) => state.breath);
   const videoRef = useRef(null);
@@ -49,12 +49,6 @@ function Breath() {
     }
   }, [isPaused]);
 
-  useEffect(() => {
-    if (currentTime === 0) {
-      handleTimerEnd();
-    }
-  }, [currentTime]);
-
   const handleVideoEnd = () => {
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -63,6 +57,7 @@ function Breath() {
   };
 
   const handleTimerEnd = () => {
+    dispatch(setShowCongrats(true));
     dispatch(setVideoPlaying(false));
     dispatch(setCountdownRunning(false));
     dispatch(setCountupRunning(false));
@@ -83,7 +78,6 @@ function Breath() {
         dispatch(setShowPopup(false));
       }, 3000);
     } else {
-      dispatch(setShowCongrats(true));
       handleTimerEnd();
     }
   }
@@ -123,20 +117,27 @@ function Breath() {
         <Header />
         {isVideoPlaying && minutes !== "" ? (
           <CountdownTimer
-            time={minutes}
+            time={parseInt(minutes, 10)}
             isPaused={isPaused}
-            currentTime={currentTime}
-            setCurrentTime={(time) => dispatch(setCurrentTime(time))}
+            onTimerEnd={handleTimerEnd}
           ></CountdownTimer>
         ) : (
           <div></div>
         )}
-
-        {isVideoPlaying && minutes === "" ? (
-          <CountupTimer
-            isRunning={isCountupRunning}
-            setIsRunning={(isRunning) => dispatch(setCountupRunning(isRunning))}
-          ></CountupTimer>
+        {isVideoPlaying ? (
+          <div
+            className="countup-timer-container"
+            style={{
+              opacity: minutes === "" ? 1 : 0,
+            }}
+          >
+            <CountupTimer
+              isRunning={isCountupRunning}
+              setIsRunning={(isRunning) =>
+                dispatch(setCountupRunning(isRunning))
+              }
+            ></CountupTimer>
+          </div>
         ) : (
           <div></div>
         )}

@@ -7,8 +7,9 @@ const initialState = {
   isCountupRunning: true,
   isPaused: false,
   show: false,
-  time: 0,
+  currentTime: 0,
   showCongrats: false,
+  times: 0,
 };
 
 const breathReducer = (state = initialState, action) => {
@@ -31,11 +32,14 @@ const breathReducer = (state = initialState, action) => {
     case actionTypes.showPopup:
       return { ...state, showPopup: action.payload };
 
-    case actionTypes.currentTime:
+    case actionTypes.currentTimeSet:
       return { ...state, currentTime: action.payload };
 
     case actionTypes.showCongratsSet:
       return { ...state, showCongrats: action.payload };
+
+    case actionTypes.vrijeme:
+      return { ...state, times: action.payload };
 
     default:
       return state;

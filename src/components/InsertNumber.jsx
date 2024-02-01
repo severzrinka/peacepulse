@@ -21,7 +21,11 @@ const InsertNumber = ({ onMinutesChange }) => {
           onChange={handleMinutesChange}
           placeholder="00"
           maxLength="2"
-          style={{ width: "40px", height: "50px" }}
+          style={{
+            width: "40px",
+            height: "50px",
+            textAlign: "center",
+          }}
         />
       </label>
     </div>

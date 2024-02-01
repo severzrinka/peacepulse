@@ -31,12 +31,16 @@ export const setShowPopup = (show) => ({
   payload: show,
 });
 
-export const setCurrentTime = (time) => ({
-  type: actionTypes.currentTime,
-  payload: time,
+export const setCurrentTime = (currentTime) => ({
+  type: actionTypes.currentTimeSet,
+  payload: currentTime,
 });
 
 export const setShowCongrats = (showCongrats) => ({
   type: actionTypes.showCongratsSet,
   payload: showCongrats,
+});
+export const setvrijeme = (times) => ({
+  type: actionTypes.vrijeme,
+  payload: times,
 });

@@ -1,23 +1,45 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
-const CountdownTimer = ({ time, isPaused }) => {
+const CountdownTimer = ({ time, isPaused, onTimerEnd }) => {
   const [localTime, setLocalTime] = useState(time * 60);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     setLocalTime(time * 60);
   }, [time]);
 
+  const startTimer = () => {
+    if (intervalRef.current !== null) return;
+
+    intervalRef.current = setInterval(() => {
+      setLocalTime((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          onTimerEnd();
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
   useEffect(() => {
-    let timer;
-    if (!isPaused && localTime > 0) {
-      timer = setInterval(() => {
-        setLocalTime((prevTime) => prevTime - 1);
-      }, 1000);
+    if (isPaused) {
+      stopTimer();
+    } else {
+      startTimer();
     }
 
-    return () => clearInterval(timer);
-  }, [isPaused, localTime]);
+    return () => stopTimer();
+  }, [isPaused]);
 
   const formatTime = (seconds) => {
     const remainingMinutes = Math.floor(seconds / 60);
@@ -39,6 +61,7 @@ const CountdownTimer = ({ time, isPaused }) => {
 CountdownTimer.propTypes = {
   time: PropTypes.number.isRequired,
   isPaused: PropTypes.bool.isRequired,
+  onTimerEnd: PropTypes.func,
 };
 
 export default CountdownTimer;
