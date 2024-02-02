@@ -18,8 +18,7 @@ import CountupTimer from "../components/CountupTimer";
 import Popup from "../components/Popup";
 import { useParams } from "react-router-dom";
 import sea from "/public/sea.png";
-import kocka from "/public/kocka.mp4";
-import { disanja, opis } from "/globalThings";
+import { disanja, opis, snimke } from "/globalThings";
 import Congrats from "./Congrats";
 
 function Breath() {
@@ -32,7 +31,6 @@ function Breath() {
     isCountupRunning,
     isPaused,
     showPopup,
-    // currentTime,
     showCongrats,
   } = useSelector((state) => state.breath);
   const videoRef = useRef(null);
@@ -42,6 +40,7 @@ function Breath() {
   const pozicija = parseInt(id, 10);
   const description = opis[pozicija];
   const ime = disanja[pozicija];
+  const snimak = snimke[pozicija];
 
   useEffect(() => {
     if (videoRef.current) {
@@ -152,7 +151,7 @@ function Breath() {
           <div className="flex mt-10 justify-center">
             <video
               ref={videoRef}
-              src={kocka}
+              src={snimak}
               controls
               autoPlay
               style={{ width: "60%", maxWidth: "500px" }}

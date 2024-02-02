@@ -3,12 +3,11 @@ import confetti from "canvas-confetti";
 import ButtoN from "../components/ButtoN";
 import { setShowCongrats, setvrijeme } from "../reduxOperations/actions";
 import { useDispatch, useSelector } from "react-redux";
-import heavy from "/public/heavy.jpeg";
-import bad from "/public/bad.png";
-import tree from "/public/tree.png";
+import tree from "../../public/tree.png";
+import bad from "../../public/bad.png";
+import heavy from "../../public/heavy.jpeg";
 
 //FUCKING FIX THIS
-
 function Congrats() {
   const dispatch = useDispatch();
   const { showCongrats, times } = useSelector((state) => state.breath);
@@ -57,25 +56,25 @@ function Congrats() {
   function getImageAndText() {
     const formattedTime = formatTime(times);
 
-    if (formattedTime <= 10) {
+    if (formattedTime <= "10:00") {
       return {
-        image: heavy,
+        slika: heavy,
         text: "It is hard to find time for yourself, and you should be proud you practiced mindfulness today! The time you spent breathing is:",
       };
-    } else if (formattedTime < 30) {
+    } else if (formattedTime < "20:00") {
       return {
-        image: bad,
-        text: "Truly a mindful master, you did an amazing job! You should be broud of yourself because time you spent breathing is:",
+        slika: bad,
+        text: "Truly a mindful master, you did an amazing job! You should be proud of yourself because time you spent breathing is:",
       };
     } else {
       return {
-        image: tree,
+        slika: tree,
         text: "You are on a path of enlightment. You take your spiritual jurney seriously! You meditated for:",
       };
     }
   }
 
-  const { image, text } = getImageAndText();
+  const { slika, text } = getImageAndText();
 
   return (
     <>
@@ -84,22 +83,19 @@ function Congrats() {
           <h1 className="md:text-5xl mt-12 font-serif text-center black sm:text-2xl">
             Congratulations!
           </h1>
-          {formatTime(times) <= 10 ? (
-            <img
-              src={image}
-              style={{
-                resizeMode: "contain",
-                height: 300,
-                width: 400,
-                margin: "20px 0",
-              }}
-              alt=""
-            />
-          ) : (
-            <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl">
-              {text} {formatTime(times)}
-            </p>
-          )}
+          <img
+            src={slika}
+            style={{
+              resizeMode: "contain",
+              height: 400,
+              width: 500,
+              margin: "20px 0",
+            }}
+            alt=""
+          />
+          <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl">
+            {text} {formatTime(times)}
+          </p>
           <div className="flex justify-center mt-12">
             <ButtoN text={"OK"} onClick={handleCloseCongrats} />
           </div>
