@@ -7,3 +7,4 @@ export const showPopup = "showPopup";
 export const currentTimeSet = "currentTime";
 export const showCongratsSet = "showCongratsSet";
 export const vrijeme = "vrijeme";
+export const pozadina = "pozadina";

@@ -17,7 +17,7 @@ import InsertNumber from "../components/InsertNumber";
 import CountupTimer from "../components/CountupTimer";
 import Popup from "../components/Popup";
 import { useParams } from "react-router-dom";
-import sea from "/public/sea.png";
+//import sea from "/public/sea.png";
 import { disanja, opis, snimke } from "/globalThings";
 import Congrats from "./Congrats";
 
@@ -90,27 +90,9 @@ function Breath() {
     dispatch(setCountupRunning(!isCountupRunning));
   }
 
-  const pageStyle = {
-    backgroundImage: `url(${sea})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundColor: "#def1ff",
-    minHeight: "100vh",
-  };
-
-  const overlayStyle = {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(222, 241, 255, 0.6)",
-  };
-
   return (
-    <div style={pageStyle}>
-      <div style={overlayStyle}>
+    <div className="pageStyle">
+      <div className="overlayStyle">
         {showCongrats && <Congrats></Congrats>}
         <Popup show={showPopup} what={"get ready..."}></Popup>
         <Header />
@@ -140,10 +122,10 @@ function Breath() {
         ) : (
           <div></div>
         )}
-        <h1 className="md:text-3xl mt-12 font-serif text-center black sm:text-l">
+        <h1 className="md:text-3xl mt-12 font-serif text-center black sm:text-l imeDisanja">
           {ime}
         </h1>
-        <p className="mt-10 font-serif md:text-lg text-center black sm:text-l">
+        <p className="mt-10 font-serif md:text-lg text-center black sm:text-l sync">
           Simply sync your breathing to the animation
         </p>
 
@@ -159,7 +141,7 @@ function Breath() {
             />
           </div>
         ) : (
-          <div className="lg:ml-72 lg:mr-56 mt-12 md:text-lg font-serif text-center black sm:text-l">
+          <div className="lg:ml-72 lg:mr-56 mt-12 md:text-lg font-serif text-center black sm:text-l description">
             <p>{description}</p>
           </div>
         )}
@@ -182,7 +164,7 @@ function Breath() {
           <div></div>
         ) : (
           <>
-            <p className="lg:ml-64 lg:mr-56 mt-5 md:text-lg font-serif text-center black sm:text-l">
+            <p className="lg:ml-64 lg:mr-56 mt-5 md:text-lg font-serif text-center black sm:text-l optional">
               You can set the time limit in minutes (optional)
             </p>
             <InsertNumber onMinutesChange={handleMinutesChange}></InsertNumber>

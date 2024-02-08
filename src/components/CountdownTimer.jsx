@@ -51,7 +51,7 @@ const CountdownTimer = ({ time, isPaused, onTimerEnd }) => {
 
   return (
     <div style={{ position: "absolute", top: 130, right: 0, padding: "10px" }}>
-      <p className="md:text-3xl font-serif black sm:text-l">
+      <p className="md:text-3xl font-serif black sm:text-l vrijeme">
         {formatTime(localTime)}
       </p>
     </div>

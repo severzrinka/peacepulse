@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .boja-200 {
+    background-color: #c9e6ff;
+  }
+}
+
+.pageStyle {
+  background-image: url("/public/sea.png");
+  background-size: cover;
+  background-position: center;
+  background-color: #def1ff;
+  min-height: 100vh;
+}
+
+.overlayStyle {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(222, 241, 255, 0.6);
+}
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.422);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+}
+
+.imeDisanja {
+  color: #000000;
+}
+
+.sync {
+  color: #000000;
+}
+
+.description {
+  color: #000000;
+}
+
+.optional {
+  color: #000000;
+}
+
+.kontenjer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.422);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 100px;
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+}
+
+.congradulations {
+  color: #000000;
+}
+
+.opis {
+  color: #000000;
+}
+
+.boxStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  width: 300px;
+  border-radius: 10px;
+  background-color: #c9e6ff;
+  border: 2px solid #72baf7;
+  padding: 10px;
+}
+
+.chooseBreath {
+  color: #000000;
+}
+
+.grid {
+  color: #000000;
+}
+
+.buttonStyle {
+  padding: 10px 20px;
+  font-size: 26px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.vrijeme {
+  color: #000000;
+}
+
+.zaglavnjeTekst {
+  color: #000000;
+  border-color: #72baf7;
+}

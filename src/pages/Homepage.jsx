@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import { disanja } from "/globalThings";
-import sea from "/public/sea.png";
 import { useBreath } from "../contexts/BreathContext";
 import {
   setVideoPlaying,
@@ -17,13 +16,6 @@ function Homepage() {
   const dispatch = useDispatch();
   const { setBreathingTechnique } = useBreath();
 
-  const pageStyle = {
-    backgroundImage: `url(${sea})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundColor: "#def1ff",
-    minHeight: "100vh",
-  };
   const gridContainerStyle = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -31,19 +23,6 @@ function Homepage() {
     alignItems: "center",
     justifyContent: "center",
     padding: "5vw",
-  };
-
-  const boxStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "300px",
-    width: "300px",
-    borderRadius: "10px",
-    backgroundColor: "#c9e6ff",
-    border: "2px solid #72baf7",
-    padding: "10px",
   };
 
   const textStyle = {
@@ -63,12 +42,12 @@ function Homepage() {
   }
 
   return (
-    <div style={pageStyle}>
+    <div className="pageStyle">
       <Header />
-      <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl">
+      <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl chooseBreath">
         Choose your breathing exercise for today
       </p>
-      <div className="lg:ml-96 lg:mr-32 md:ml-72 md:mr-56 sm:flex sm:justify-center">
+      <div className="lg:ml-96 lg:mr-32 md:ml-72 md:mr-56 sm:flex sm:justify-center grid">
         <div className="sm:flex-grow" style={gridContainerStyle}>
           {disanja.map((breathingTechnique, index) => (
             <Link
@@ -76,7 +55,7 @@ function Homepage() {
               to={`/breath/${index}`}
               onClick={() => handleLinkKlik(breathingTechnique)}
             >
-              <div style={boxStyle}>
+              <div className="boxStyle">
                 <p style={textStyle}>{breathingTechnique}</p>
               </div>
             </Link>

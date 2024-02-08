@@ -10,6 +10,7 @@ const initialState = {
   currentTime: 0,
   showCongrats: false,
   times: 0,
+  boja: true,
 };
 
 const breathReducer = (state = initialState, action) => {
@@ -40,6 +41,9 @@ const breathReducer = (state = initialState, action) => {
 
     case actionTypes.vrijeme:
       return { ...state, times: action.payload };
+
+    case actionTypes.pozadina:
+      return { ...state, boja: action.payload };
 
     default:
       return state;

@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .boja-200 {
+    background-color: #004581;
+  }
+}
+
+.pageStyle {
+  background-image: url("/public/seaD.png");
+  background-size: cover;
+  background-position: center;
+  background-color: #003f6cce;
+  min-height: 100vh;
+}
+
+.overlayStyle {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(79, 88, 94, 0.6);
+}
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(75, 75, 75, 0.422);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+}
+
+.imeDisanja {
+  color: #c9e6ff;
+}
+
+.sync {
+  color: #c9e6ff;
+}
+
+.description {
+  color: #c9e6ff;
+}
+
+.optional {
+  color: #c9e6ff;
+}
+
+.kontenjer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(21, 21, 21, 0.422);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 100px;
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+}
+
+.congradulations {
+  color: #c9e6ff;
+}
+
+.opis {
+  color: #c9e6ff;
+}
+
+.boxStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  width: 300px;
+  border-radius: 10px;
+  background-color: #004581;
+  border: 2px solid #05243f;
+  padding: 10px;
+}
+
+.chooseBreath {
+  color: #c9e6ff;
+}
+
+.grid {
+  color: #c9e6ff;
+}
+
+.buttonStyle {
+  padding: 10px 20px;
+  font-size: 26px;
+  background-color: #004581;
+  color: #c9e6ff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(159, 87, 87, 0.2);
+  transition: all 0.3s ease;
+}
+
+.vrijeme {
+  color: #c9e6ff;
+}
+
+.zaglavnjeTekst {
+  color: #c9e6ff;
+  border-color: #003b6e;
+}

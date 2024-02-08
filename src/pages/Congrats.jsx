@@ -7,7 +7,6 @@ import tree from "../../public/tree.png";
 import bad from "../../public/bad.png";
 import heavy from "../../public/heavy.jpeg";
 
-//FUCKING FIX THIS
 function Congrats() {
   const dispatch = useDispatch();
   const { showCongrats, times } = useSelector((state) => state.breath);
@@ -17,21 +16,6 @@ function Congrats() {
     dispatch(setShowCongrats(false));
   };
 
-  const kontenjer = {
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    height: "100%",
-    background: "rgba(255, 255, 255, 0.422)",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingTop: "100px",
-    backdropFilter: "blur(8px)",
-    zIndex: 1000,
-  };
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -79,8 +63,8 @@ function Congrats() {
   return (
     <>
       {showCongrats && (
-        <div style={kontenjer}>
-          <h1 className="md:text-5xl mt-12 font-serif text-center black sm:text-2xl">
+        <div className="kontenjer">
+          <h1 className="md:text-5xl mt-12 font-serif text-center black sm:text-2xl congradulations">
             Congratulations!
           </h1>
           <img
@@ -93,7 +77,7 @@ function Congrats() {
             }}
             alt=""
           />
-          <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl">
+          <p className="md:text-2xl mt-4 text-center font-serif italic sm:text-xl opis">
             {text} {formatTime(times)}
           </p>
           <div className="flex justify-center mt-12">

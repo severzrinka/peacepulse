@@ -1,4 +1,3 @@
-// actions.js
 import * as actionTypes from "./actionTypes";
 
 export const setVideoPlaying = (isPlaying) => ({
@@ -43,4 +42,9 @@ export const setShowCongrats = (showCongrats) => ({
 export const setvrijeme = (times) => ({
   type: actionTypes.vrijeme,
   payload: times,
+});
+
+export const setpozadina = (boja) => ({
+  type: actionTypes.pozadina,
+  payload: boja,
 });
